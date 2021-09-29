@@ -1,0 +1,42 @@
+{
+  "name": "smartclide-perftestgen-theia",
+  "publisher": "theia",
+  "keywords": [
+    "theia-plugin"
+  ],
+  "version": "0.0.1",
+  "license": "none",
+  "files": [
+    "src"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "dependencies": {
+    "@openapitools/openapi-generator-cli": "^2.4.1",
+    "js-yaml": "latest"
+  },
+  "devDependencies": {
+    "@theia/plugin": "latest",
+    "@theia/core": "latest",
+    "@theia/plugin-packager": "latest",
+    "@types/js-yaml": "^4.0.3",
+    "rimraf": "latest",
+    "typescript": "latest",
+    "typescript-formatter": "latest"
+  },
+  "scripts": {
+    "prepare": "yarn run clean && yarn run build",
+    "clean": "rimraf lib",
+    "format-code": "tsfmt -r",
+    "watch": "tsc -watch",
+    "compile": "tsc",
+    "build": "yarn run format-code && yarn run compile && theia-plugin pack"
+  },
+  "engines": {
+    "theiaPlugin": "next"
+  },
+  "theiaPlugin": {
+    "backend": "lib/perfTestGen-backend.js"
+  }
+}
