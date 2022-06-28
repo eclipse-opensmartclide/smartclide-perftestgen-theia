@@ -39,10 +39,10 @@ export async function quickInputFolder(inputMetaData: IInputMetaData): Promise<s
         d.dispose();
     }
     //hack to ensure input box disappears
-    const inputBox: InputBox = window.createInputBox();
-    inputBox.show();
-    inputBox.hide();
-    inputBox.dispose();
+    // const inputBox: InputBox = window.createInputBox();
+    // inputBox.show();
+    // inputBox.hide();
+    // inputBox.dispose();
     return result;
 }
 
