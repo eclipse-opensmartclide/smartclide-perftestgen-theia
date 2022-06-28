@@ -17,6 +17,9 @@ export async function quickPickOpenApiDescriptorFileItem(fileUri: theia.Uri, roo
     }
 
     const items: Item[] = await resolveFilesOfPattern(rootFolder, [JSON_GLOB_PATTERN, YAML_GLOB_PATTERN], EXCLUDE_GLOB_PATTERN);
+    if (!items) {
+        throw new Error("No suitable files found")
+    }
     const fileItem: Item = await quickPickFileItem({
         title: "Descriptor file",
         placeholder: "Select an OpenAPI/Swagger descriptor file:",
@@ -34,6 +37,9 @@ export async function quickPickPipelineFileItem(fileUri: theia.Uri, rootFolder: 
     }
 
     const items: Item[] = await resolveFilesOfPattern(rootFolder, [GITLABCI_GLOB_PATTERN]);//, EXCLUDE_GLOB_PATTERN);
+    if (!items) {
+        throw new Error("No suitable files found")
+    }
     const fileItem: Item = await quickPickFileItem({
         title: "Pipeline file",
         placeholder: "Select an GitLab CI pipeline descriptor file:",
@@ -52,6 +58,9 @@ export async function quickPickTestFileItem(fileUri: theia.Uri, rootFolder: thei
     }
 
     const items: Item[] = await resolveFilesOfPattern(rootFolder, [JS_GLOB_PATTERN], EXCLUDE_GLOB_PATTERN2);
+    if (!items) {
+        throw new Error("No suitable files found")
+    }
     const fileItem: Item = await quickPickFileItem({
         title: "Test script file",
         placeholder: "Select the test script file to be included:",
