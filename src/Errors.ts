@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2021 KAIROS DS
+ * Copyright (C) 2021-2022 KAIROS DS
  * 
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -7,7 +7,6 @@
  * 
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
-
 export class OperationCanceledError extends Error {
     constructor(msg?: string) {
         super("Operation cancelled: " + msg);
