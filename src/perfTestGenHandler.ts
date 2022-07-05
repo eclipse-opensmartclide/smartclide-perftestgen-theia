@@ -25,12 +25,6 @@ export async function generatePerformanceTests(this: any, descriptorFileUri: the
 
         const descriptorFileItem = await quickPickOpenApiDescriptorFileItem(descriptorFileUri, rootFolder);
 
-        // var destFolder = await quickInputFolder({
-        //     title: "Destination folder",
-        //     prompt: "Enter a destination folder for the generated script",
-        //     defaultValue: path.join(rootFolder.name, "src", "performanceTest")
-        // });
-
         var destFolder = await theia.window.showInputBox({
             prompt: "Enter a destination folder for the generated script",
             ignoreFocusOut: true,
