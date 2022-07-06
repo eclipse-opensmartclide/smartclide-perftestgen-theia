@@ -11,7 +11,7 @@
 apiVersion: v2
 publisher: Kairos Digital Solutions
 name: smartclide-perftest-plugin
-version: 0.0.3-rc4
+version: 0.0.3-rc6
 type: Che Plugin
 displayName: SmartCLIDE Performance Tests Generator
 title: SmartCLIDE Performance Tests Generator Plugin

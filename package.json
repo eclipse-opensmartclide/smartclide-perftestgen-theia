@@ -4,7 +4,7 @@
   "keywords": [
     "theia-plugin"
   ],
-  "version": "0.0.3-rc4",
+  "version": "0.0.3-rc6",
   "license": "none",
   "files": [
     "src"
