@@ -22,5 +22,7 @@ firstPublicationDate: "2021-04-27"
 category: Other
 spec:
   containers:
-  - image: openapitools/openapi-generator-cli
-    mountSources: true
+    - image: openapitools/openapi-generator-cli
+  extensions:
+    - https://github.com/eclipse-researchlabs/smartclide-perftestgen-theia/releases/download/v0.0.3-rc6/smartclide_perftestgen_theia.theia
+
