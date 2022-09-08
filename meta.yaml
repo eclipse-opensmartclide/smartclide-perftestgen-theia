@@ -12,7 +12,7 @@ apiVersion: v2
 publisher: Kairos Digital Solutions
 name: smartclide-perftest-plugin
 version: 0.0.3-rc6
-type: Che Plugin
+type: Theia plugin
 displayName: SmartCLIDE Performance Tests Generator
 title: SmartCLIDE Performance Tests Generator Plugin
 description: Che Plug-in to generate performance tests for a given OpenAPI endpoint spec.
@@ -25,4 +25,3 @@ spec:
     - image: openapitools/openapi-generator-cli
   extensions:
     - https://github.com/eclipse-researchlabs/smartclide-perftestgen-theia/releases/download/v0.0.3-rc6/smartclide_perftestgen_theia.theia
-
