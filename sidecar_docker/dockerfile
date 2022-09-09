@@ -9,6 +9,6 @@ RUN mkdir /projects ${HOME} && \
       chmod -R g+rwX ${f}; \
     done
 
-ADD entrypoint.sh /entrypoint.sh
+COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT [ "/entrypoint.sh" ]
 CMD ${PLUGIN_REMOTE_ENDPOINT_EXECUTABLE}
