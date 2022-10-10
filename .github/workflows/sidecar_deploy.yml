@@ -18,6 +18,6 @@ jobs:
           # login to GitHub Container Registry
           echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${GITHUB_ACTOR} --password-stdin
           # build image
-          docker build sidecar_docker/ --tag ghcr.io/eclipse-researchlabs/smartclide/perftestgen_sidecar_che:$(date +'%Y-%m-%d')
+          docker build sidecar_docker/ --tag ghcr.io/eclipse-opensmartclide/smartclide/perftestgen_sidecar_che:$(date +'%Y-%m-%d')
           # push image
-          docker push ghcr.io/eclipse-researchlabs/smartclide/perftestgen_sidecar_che:$(date +'%Y-%m-%d')
+          docker push ghcr.io/eclipse-opensmartclide/smartclide/perftestgen_sidecar_che:$(date +'%Y-%m-%d')
