@@ -17,9 +17,9 @@ displayName: SmartCLIDE Performance Tests Generator
 title: SmartCLIDE Performance Tests Generator Plugin
 description: Che Plug-in to generate performance tests for a given OpenAPI endpoint spec.
 icon: https://www.eclipse.org/che/images/logo-eclipseche.svg
-repository: https://github.com/eclipse-researchlabs/smartclide-perftestgen-theia
+repository: https://github.com/eclipse-opensmartclide/smartclide-perftestgen-theia
 firstPublicationDate: "2021-04-27"
 category: Other
 spec:
   extensions:
-    - https://github.com/eclipse-researchlabs/smartclide-perftestgen-theia/releases/download/v0.0.3-rc6/smartclide_perftestgen_theia.theia
+    - https://github.com/eclipse-opensmartclide/smartclide-perftestgen-theia/releases/download/v0.0.3-rc6/smartclide_perftestgen_theia.theia
