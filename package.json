@@ -20,7 +20,7 @@
     "@theia/plugin": "latest",
     "@theia/core": "latest",
     "@theia/plugin-packager": "latest",
-    "@types/js-yaml": "^4.0.3",
+    "@types/js-yaml": "^4.0.5",
     "rimraf": "latest",
     "typescript": "latest",
     "typescript-formatter": "latest"
