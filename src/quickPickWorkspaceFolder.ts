@@ -7,12 +7,12 @@
  * 
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
-import * as theia from '@theia/plugin';
-import { Disposable, QuickPick, window } from "@theia/plugin";
+import * as vscode from 'vscode';
+import { Disposable, QuickPick, window } from 'vscode';
 import { OperationCanceledError } from './Errors';
 
-export interface Item extends theia.QuickPickItem {
-    actualFolder: theia.WorkspaceFolder;
+export interface Item extends vscode.QuickPickItem {
+    actualFolder: vscode.WorkspaceFolder;
 }
 
 export interface IPickMetadata {
@@ -21,17 +21,17 @@ export interface IPickMetadata {
     items: Item[];
 }
 
-export async function quickPickWorkspaceFolder(noWorkspacesMessage: string): Promise<theia.WorkspaceFolder> {
-    if (theia.workspace.workspaceFolders && theia.workspace.workspaceFolders.length === 1) {
-        return theia.workspace.workspaceFolders[0];
-    } else if (theia.workspace.workspaceFolders && theia.workspace.workspaceFolders.length > 1) {
+export async function quickPickWorkspaceFolder(noWorkspacesMessage: string): Promise<vscode.WorkspaceFolder> {
+    if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length === 1) {
+        return vscode.workspace.workspaceFolders[0];
+    } else if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 1) {
         const items: Item[] = [];
-        theia.workspace.workspaceFolders.forEach(wsFolder => {
+        vscode.workspace.workspaceFolders.forEach(wsFolder => {
             items.push(<Item>{
                 label: wsFolder.name,
                 actualFolder: wsFolder
-            })
-        })
+            });
+        });
         const fileItem: Item = await quickPickFileItem({
             title: "Root folder",
             placeholder: "Select a folder/project to work with:",
@@ -43,7 +43,7 @@ export async function quickPickWorkspaceFolder(noWorkspacesMessage: string): Pro
         }
         return fileItem.actualFolder;
     } else {
-        throw new Error("Unexpected workspace status");
+        throw new Error(noWorkspacesMessage);
     }
 }
 
