@@ -7,24 +7,18 @@
  * 
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
-import * as theia from '@theia/plugin';
+import * as vscode from 'vscode';
 import { generatePerformanceTests } from './perfTestGenHandler';
 import { addPerformanceTestsToPipeline } from './pipelineHandler';
 
-export function start(context: theia.PluginContext) {
-    const generateTestsCommand = {
-        id: 'perf-tests-generate-command',
-        label: "SmartCLIDE: Generate performance test script..."
-    };
-    context.subscriptions.push(theia.commands.registerCommand(generateTestsCommand, (...args: any[]) => {
+export function activate(context: vscode.ExtensionContext) {
+
+	console.log('Congratulations, your extension "sample" is now active!');
+    context.subscriptions.push(vscode.commands.registerCommand("perf-tests-generate-command", (...args: any[]) => {
         generatePerformanceTests(undefined);
     }));
-    context.subscriptions.push(theia.commands.registerCommand(
-        { id: 'perf-tests-pipeline-command', label: 'SmartCLIDE: Add performance tests to pipeline...' },
+    context.subscriptions.push(vscode.commands.registerCommand("perf-tests-pipeline-command",
         () => { addPerformanceTestsToPipeline(undefined, undefined); }));
 }
 
-
-export function stop() {
-
-}
+export function deactivate() {}

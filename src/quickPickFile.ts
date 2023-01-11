@@ -8,19 +8,19 @@
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
 import * as path from "path";
-import * as theia from "@theia/plugin";
-import { Disposable, QuickPick, window } from "@theia/plugin";
+import * as vscode from 'vscode';
+import { Disposable, QuickPick, window } from 'vscode';
 import { FILE_SEARCH_MAX_RESULT, YAML_GLOB_PATTERN, JSON_GLOB_PATTERN, GITLABCI_GLOB_PATTERN, EXCLUDE_GLOB_PATTERN, EXCLUDE_GLOB_PATTERN2, JS_GLOB_PATTERN } from "./constants";
 import { OperationCanceledError } from "./Errors";
 
-export interface Item extends theia.QuickPickItem {
+export interface Item extends vscode.QuickPickItem {
     relativeFilePath: string;
     relativeFolderPath: string;
     absoluteFilePath: string;
     absoluteFolderPath: string;
 }
 
-export async function quickPickOpenApiDescriptorFileItem(fileUri: theia.Uri, rootFolder: theia.WorkspaceFolder): Promise<Item> {
+export async function quickPickOpenApiDescriptorFileItem(fileUri: vscode.Uri, rootFolder: vscode.WorkspaceFolder): Promise<Item> {
     if (fileUri) {
         return createFileItem(rootFolder, fileUri);
     }
@@ -40,7 +40,7 @@ export async function quickPickOpenApiDescriptorFileItem(fileUri: theia.Uri, roo
     }
     return fileItem;
 }
-export async function quickPickPipelineFileItem(fileUri: theia.Uri, rootFolder: theia.WorkspaceFolder): Promise<Item> {
+export async function quickPickPipelineFileItem(fileUri: vscode.Uri, rootFolder: vscode.WorkspaceFolder): Promise<Item> {
     if (fileUri) {
         return createFileItem(rootFolder, fileUri);
     }
@@ -61,7 +61,7 @@ export async function quickPickPipelineFileItem(fileUri: theia.Uri, rootFolder: 
     return fileItem;
 }
 
-export async function quickPickTestFileItem(fileUri: theia.Uri, rootFolder: theia.WorkspaceFolder): Promise<Item> {
+export async function quickPickTestFileItem(fileUri: vscode.Uri, rootFolder: vscode.WorkspaceFolder): Promise<Item> {
     if (fileUri) {
         return createFileItem(rootFolder, fileUri);
     }
@@ -82,7 +82,7 @@ export async function quickPickTestFileItem(fileUri: theia.Uri, rootFolder: thei
     return fileItem;
 }
 
-export function createFileItem(rootFolder: theia.WorkspaceFolder, uri: theia.Uri): Item {
+export function createFileItem(rootFolder: vscode.WorkspaceFolder, uri: vscode.Uri): Item {
     const relativeFilePath = path.join(".", uri.fsPath.substr(rootFolder.uri.fsPath.length));
 
     return <Item>{
@@ -95,9 +95,9 @@ export function createFileItem(rootFolder: theia.WorkspaceFolder, uri: theia.Uri
     };
 }
 
-export async function resolveFilesOfPattern(rootFolder: theia.WorkspaceFolder, filePatterns: string[], excludePattern?: string)
+export async function resolveFilesOfPattern(rootFolder: vscode.WorkspaceFolder, filePatterns: string[], excludePattern?: string)
     : Promise<Item[] | undefined> {
-    let uris: theia.Uri[] = [];
+    let uris: vscode.Uri[] = [];
     await Promise.all(filePatterns.map(async (pattern: string) => {
         uris.push(...await getFileUris(rootFolder, pattern, excludePattern));
     }));
@@ -116,13 +116,13 @@ export async function resolveFilesOfPattern(rootFolder: theia.WorkspaceFolder, f
 //         if (items.length === 1) {
 //             return items[0];
 //         } else {
-//             return await theia.window.showQuickPick<Item>(items, { placeHolder: message });
+//             return await vscode.window.showQuickPick<Item>(items, { placeHolder: message });
 //         }
 //     }
 // }
 
-async function getFileUris(folder: theia.WorkspaceFolder, globPattern: string, excludePattern?: string): Promise<theia.Uri[]> {
-    return await theia.workspace.findFiles(new theia.RelativePattern(folder, globPattern), excludePattern ? new theia.RelativePattern(folder, excludePattern) : undefined, FILE_SEARCH_MAX_RESULT, undefined);
+async function getFileUris(folder: vscode.WorkspaceFolder, globPattern: string, excludePattern?: string): Promise<vscode.Uri[]> {
+    return await vscode.workspace.findFiles(new vscode.RelativePattern(folder, globPattern), excludePattern ? new vscode.RelativePattern(folder, excludePattern) : undefined, FILE_SEARCH_MAX_RESULT, undefined);
 }
 
 export interface IPickMetadata {
