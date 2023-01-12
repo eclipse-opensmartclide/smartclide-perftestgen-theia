@@ -7,9 +7,8 @@
  * 
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
-import { Disposable, InputBox, window } from "@theia/plugin";
+import { Disposable, InputBox, window } from 'vscode';
 import { OperationCanceledError } from "./Errors";
-//import { IServiceData } from "./IServiceData";
 
 export async function quickInputFolder(inputMetaData: IInputMetaData): Promise<string> {
     const disposables: Disposable[] = [];
@@ -47,12 +46,10 @@ export async function quickInputFolder(inputMetaData: IInputMetaData): Promise<s
 }
 
 export interface IInputMetaData {
-    // metadata: IServiceData;
     title?: string;
     placeholder?: string;
     prompt?: string;
     defaultValue?: string;
     stepCancelledMsg?: string;
     validate?(inputFieldValue: string): string | null;
-    // assignValue(inputFieldValue: string): void;
 }

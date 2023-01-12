@@ -8,40 +8,37 @@
  * SPDX-License-Identifier: EPL-2.0
  ******************************************************************************/
 import { OperationCanceledError } from './Errors';
-import * as theia from "@theia/plugin";
+import * as vscode from 'vscode';
 import * as  yaml from "js-yaml";
 import { quickPickPipelineFileItem, quickPickTestFileItem } from "./quickPickFile";
 import { quickPickWorkspaceFolder } from './quickPickWorkspaceFolder';
+import * as fs from 'fs';
 
-export async function addPerformanceTestsToPipeline(gitlabFileUri: theia.Uri | undefined, scriptFileUri: theia.Uri | undefined): Promise<void> {
+export async function addPerformanceTestsToPipeline(gitlabFileUri: vscode.Uri | undefined, scriptFileUri: vscode.Uri | undefined): Promise<void> {
     try {
-        let rootFolder: theia.WorkspaceFolder;
+        var rootFolder;
         if (gitlabFileUri) {
-            rootFolder = theia.workspace.getWorkspaceFolder(gitlabFileUri);
+            rootFolder = vscode.workspace.getWorkspaceFolder(gitlabFileUri);
         }
 
         rootFolder = rootFolder || await quickPickWorkspaceFolder('To generate tests you must first open a folder or workspace.');
 
-        // let fileUri = await selectGitlabFile(gitlabFileUri);
         let fileItem = await quickPickPipelineFileItem(gitlabFileUri, rootFolder);
-        const fileUri = theia.Uri.file(fileItem.absoluteFilePath);
+        const fileUri = vscode.Uri.file(fileItem.absoluteFilePath);
 
-        // let testFileRelativePath = await selectTestScriptFile(scriptFileUri);
         let testScriptFileItem = await quickPickTestFileItem(scriptFileUri, rootFolder);
 
-        // await updatePipeline(fileItem.uri, testFileRelativePath);
         await updatePipeline(fileUri, testScriptFileItem.relativeFilePath);
 
-        theia.window.showTextDocument(fileUri);
-        theia.window.showInformationMessage("Testing stage added to pipeline");
+        vscode.window.showTextDocument(fileUri);
+        vscode.window.showInformationMessage("Testing stage added to pipeline");
     } catch (error) {
-        theia.window.showErrorMessage(`Error: ${(error as Error).message}\n${(error as Error).stack}`);
+        vscode.window.showErrorMessage(`Error: ${(error as Error).message}\n${(error as Error).stack}`);
     }
 }
-async function selectGitlabFile(gitlabFileUri: theia.Uri | undefined): Promise<theia.Uri> {
-    let fileUris = await theia.window.showOpenDialog({
-        title: "Gitlab CI file", canSelectMany: false, filters: { 'GitLab CI File': ['yml', 'yaml'] },
-        defaultUri: theia.workspace.workspaceFolders[0].uri
+async function selectGitlabFile(gitlabFileUri: vscode.Uri | undefined): Promise<vscode.Uri> {
+    let fileUris = await vscode.window.showOpenDialog({
+        title: "Gitlab CI file", canSelectMany: false, filters: { 'GitLab CI File': ['yml', 'yaml'] }
     });
     if (!fileUris || fileUris.length < 1) {
         throw new OperationCanceledError("No file selected");
@@ -49,58 +46,25 @@ async function selectGitlabFile(gitlabFileUri: theia.Uri | undefined): Promise<t
     return fileUris[0];
 }
 
-async function selectTestScriptFile(scriptFileUri: theia.Uri | undefined): Promise<string> {
-    let testFileUri = (scriptFileUri) ? scriptFileUri : await theia.window.showOpenDialog({
-        title: "Test script file to be included", canSelectMany: false, filters: { 'Test Script File': ['js'] },
-        defaultUri: theia.workspace.workspaceFolders[0].uri
-    }).then(uris => uris[0]);
+async function selectTestScriptFile(scriptFileUri: vscode.Uri | undefined): Promise<string> {
+    let testFileUri = (scriptFileUri) ? scriptFileUri : await vscode.window.showOpenDialog({
+        title: "Test script file to be included", canSelectMany: false, filters: { 'Test Script File': ['js'] }
+    }).then(uris => {if(uris) {return uris[0];}});
     if (!testFileUri) {
         throw new OperationCanceledError("No test file selected");
     }
 
-    return theia.workspace.asRelativePath(testFileUri);
+    return vscode.workspace.asRelativePath(testFileUri);
 }
 
-async function updatePipeline(gitlabFileUri: theia.Uri, testFilePath: string): Promise<void> {
-    var fileContent = await theia.workspace.fs.readFile(gitlabFileUri);
-    let fileContentAsString = new TextDecoder().decode(fileContent);
+async function updatePipeline(gitlabFileUri: vscode.Uri, testFilePath: string): Promise<void> {
+    let fileContentAsString = fs.readFileSync(gitlabFileUri.fsPath, "utf-8");
     var file = yaml.load(fileContentAsString);
 
 
     if (file['stages'] && file['stages'].indexOf('load_performance') === -1) {
         file['stages'].push('load_performance');
     }
-    /*
-        const PERFORMANCE_TEMPLATE_DEFINITION = { "template": "Verify/Load-Performance-Testing.gitlab-ci.yml" };
-        if (!file["include"]) {
-            file["include"] = PERFORMANCE_TEMPLATE_DEFINITION;
-        } else {
-            if (Array.isArray(file["include"])) {
-                file["include"].push(PERFORMANCE_TEMPLATE_DEFINITION);
-            } else if (file["include"] instanceof String) {
-                let includeString = file["include"];
-                delete file["include"];
-                file["include"] = [
-                    { "local": includeString },
-                    PERFORMANCE_TEMPLATE_DEFINITION
-                ];
-            } else if (file["include"] instanceof Object) {
-                let currentIncludeObject = file["include"];
-                delete file["include"];
-                file["include"] = [
-                    currentIncludeObject,
-                    PERFORMANCE_TEMPLATE_DEFINITION
-                ];
-            }
-        }
-        file["load_performance"] = {
-            "stage": "load_performance",
-            "variables": {
-                "K6_TEST_FILE": testFilePath,
-                "K6_OPTIONS": "--duration 30s"
-            }
-        };
-    */
     file["load_performance"] = {
         "stage": "load_performance",
         "image": {
@@ -120,5 +84,5 @@ async function updatePipeline(gitlabFileUri: theia.Uri, testFilePath: string): P
         }
     };
 
-    await theia.workspace.fs.writeFile(gitlabFileUri, new TextEncoder().encode(yaml.dump(file)));
+    fs.writeFileSync(gitlabFileUri.fsPath, yaml.dump(file));
 }

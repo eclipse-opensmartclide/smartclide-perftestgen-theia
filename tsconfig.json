@@ -1,36 +1,16 @@
 {
-  "compilerOptions": {
-    "strict": false,
-    ///////////////////////
-    "alwaysStrict": false,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": false, // ESLint takes care of this for us
-    "noUnusedParameters": false, // ESLint takes care of this for us
-    "noImplicitAny": false, // TODO
-    "noImplicitReturns": false, // TODO
-    "strictNullChecks": false, // TODO
-    ///////////////////////
-    "experimentalDecorators": true,
-    //"noUnusedLocals": true,
-    "emitDecoratorMetadata": true,
-    "downlevelIteration": true,
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "target": "es6",
-    "lib": [
-      "es6",
-      
-      
-      "webworker"
-      
-    ],
-    "sourceMap": true,
-    "rootDir": "src",
-    "outDir": "lib",
-    "skipLibCheck": true
-  },
-  "include": [
-    "src"
-  ]
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "ES2020",
+		"lib": [
+			"ES2020"
+		],
+		"sourceMap": true,
+		"rootDir": "src",
+		"strict": false   /* disable all strict type-checking options */
+		/* Additional Checks */
+		// "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
+		// "noFallthroughCasesInSwitch": true, /* Report errors for fallthrough cases in switch statement. */
+		// "noUnusedParameters": true,  /* Report errors on unused parameters. */
+	}
 }
